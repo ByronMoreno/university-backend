@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  university-backend:
+    image: ghcr.io/byronmoreno/university-backend:latest
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.university-backend.entrypoints=http"
+        - "traefik.http.routers.university-backend.rule=Host(`universityback.byronrm.com`)"
+
+        - "traefik.http.middlewares.university-backend-https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.university-backend.middlewares=university-backend-https-redirect"
+
+        - "traefik.http.routers.university-backend-secure.entrypoints=https"
+        - "traefik.http.routers.university-backend-secure.rule=Host(`universityback.byronrm.com`)"
+        - "traefik.http.routers.university-backend-secure.tls=true"
+        - "traefik.http.routers.university-backend-secure.tls.certresolver=http"
+        - "traefik.http.routers.university-backend-secure.service=university-backend"
+
+        - "traefik.http.services.university-backend.loadbalancer.server.port=8080"
+        - "traefik.docker.network=traefik-public"
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
+
