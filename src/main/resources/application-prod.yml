@@ -1,0 +1,18 @@
+# Perfil de producción
+# Activar con: spring.profiles.active=prod
+
+spring:
+  datasource:
+    url: jdbc:postgresql://universitydb:5432/university
+    username: postgres
+    password: postgresqlUni
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect

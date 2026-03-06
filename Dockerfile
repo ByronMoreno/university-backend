@@ -1,7 +1,9 @@
 ## Imagen multi-stage para backend Spring Boot con Gradle y Java 21
 
 # Etapa de build: usar Gradle con JDK 21 para compilar el proyecto y generar el jar
-FROM gradle:8.7-jdk21-alpine AS build
+#FROM gradle:8.7-jdk21-alpine AS build
+# ---------- BUILD STAGE ----------
+FROM gradle:9.0-jdk21-alpine AS build
 
 WORKDIR /app
 
@@ -15,7 +17,7 @@ COPY src ./src
 # Construimos el jar ejecutable de Spring Boot
 RUN gradle clean bootJar --no-daemon
 
-
+# ---------- RUNTIME STAGE ----------
 # Etapa de runtime: solo el JRE liviano para ejecutar el jar
 FROM eclipse-temurin:21-jre-alpine
 
