@@ -52,7 +52,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/byronmoreno/university-backend:latest
+            ghcr.io/byronmoreno/university-backend:1.0.0
 
       - name: 🧾 Mostrar variables básicas (solo locales, no secretos)
         run: |
@@ -80,7 +80,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
           port: ${{ secrets.VPS_SSH_PORT }}
-          source: "stack.yml"
+          source: "stack.yml, Makefile"
           target: "/home/${{ secrets.VPS_USER }}/university-backend"
 
       - name: 🚀 Despliegue de servicios en Docker Swarm
@@ -106,7 +106,4 @@ jobs:
 
             echo "Desplegando el stack con Traefik"
             docker stack deploy --with-registry-auth -c stack.yml university
-
-            echo "Contenedores en ejecución:"
-            docker ps
 

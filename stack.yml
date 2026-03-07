@@ -2,7 +2,9 @@ version: "3.9"
 
 services:
   university-backend:
-    image: ghcr.io/byronmoreno/university-backend:latest
+    image: ghcr.io/byronmoreno/university-backend:1.0.0
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
     deploy:
       replicas: 1
       labels:
@@ -23,8 +25,27 @@ services:
         - "traefik.docker.network=traefik-public"
     networks:
       - traefik-public
+      - desarrollo_net
+  # Base de datos
+  universitydb:
+    image: postgres:15-alpine
+    environment:
+      - TZ=America/Guayaquil
+      - POSTGRES_DB=university
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgresqlUni
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - pg_university_data:/var/lib/postgresql/data/pgdata
+    networks:
+      - desarrollo_net
+
+volumes:
+  pg_university_data:
+    external: true
 
 networks:
   traefik-public:
     external: true
-
+  desarrollo_net:
+    external: true
